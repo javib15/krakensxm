@@ -1,0 +1,325 @@
+/* --- Reseteo del barco --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Evita barras de desplazamiento horizontales molestas */
+}
+
+/* Variables de CSS para nuestra paleta de colores */
+:root {
+    --fondo-profundo: #121212; /* Fondo oscuro */
+    --oro-kraken: #D4AF37;     /* Tonos dorados */
+    --texto-claro: #E0E0E0;
+    --fuente-titulos: 'Playfair Display', serif; /* Serif clásica */
+    --fuente-textos: 'Roboto', sans-serif;       /* Sans-serif limpia */
+}
+
+/* --- Tipografía Base (Descripciones y Párrafos) --- */
+body {
+    background-color: var(--fondo-profundo);
+    color: var(--texto-claro);
+    /* Aquí anclamos la nueva fuente elegante */
+    font-family: 'Cormorant Garamond', serif; 
+    font-weight: 400;
+    font-size: 1.15rem; /* Un poco más grande para una lectura cómoda */
+    margin: 0;
+    padding: 0;
+    line-height: 2.6;
+}
+
+/* --- Tipografía de Encabezados (Títulos Elegantes) --- */
+h1, h2, h3, .titulo-dorado {
+    font-family: 'Cinzel', serif; 
+    font-weight: 700;
+    text-align: center;
+    /* El toque de elegancia premium */
+    letter-spacing: 3px; 
+}
+
+a { 
+    text-decoration: none; 
+    color: var(--texto-claro); 
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    background-color: var(--oro-kraken);
+    color: var(--fondo-profundo);
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    border: 2px solid var(--oro-kraken);
+}
+
+.btn:hover {
+    background-color: transparent;
+    color: var(--oro-kraken);
+}
+
+/* Secciones */
+section {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Menú y Precios */
+.item-menu {
+    border-bottom: 1px solid #333;
+    padding: 15px 0;
+    margin-bottom: 10px;
+}
+.precio {
+    color: var(--oro-kraken);
+    font-weight: bold;
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+input, type {
+    padding: 10px;
+    border: 1px solid var(--oro-kraken);
+    background-color: #222;
+    color: white;
+}
+/* --- Ajustes para el Mapa Grande (Full-Width) --- */
+
+/* Rompemos el límite de 900px solo para la sección del mapa */
+#ubicacion {
+    max-width: 100%; 
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Contenedor sin bordes y a lo ancho de toda la pantalla */
+.mapa-container {
+    margin-top: 40px;
+    width: 100%;
+    height: 550px; /* Un mapa mucho más alto e imponente */
+    border: none; 
+    border-radius: 0; 
+    box-shadow: none;
+}
+
+/* Ajuste del iframe y filtro oscuro */
+.mapa-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Truco pirata: Invierte los colores del mapa para mantener la estética oscura de la cantina */
+    filter: invert(90%) hue-rotate(180deg) brightness(85%) contrast(110%);
+}
+
+/* --- Animación de Fondo del Kraken (Versión Moderna y Estricta) --- */
+.kraken-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.kraken-video-bg {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* Esta es la magia moderna: rellena el contenedor recortando los excesos sin deformar */
+    object-position: center; /* Asegura que el Kraken siempre esté en el centro de la pantalla */
+}
+
+.kraken-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+/* --- Estilos de la Galería (Estilo Mosaico / Google Photos) --- */
+.galeria-grid {
+    display: grid;
+    /* Esto crea columnas automáticas que no serán más pequeñas de 250px */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px; /* Espacio entre las fotos */
+    margin-top: 40px;
+}
+
+.galeria-grid img {
+    width: 100%;
+    height: 250px; /* Altura uniforme para todas las fotos */
+    object-fit: cover; /* El truco mágico: recorta la imagen sin deformarla */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra para dar profundidad */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza la animación */
+    cursor: pointer;
+}
+
+/* Pequeño efecto pirata al pasar el cursor (hover) */
+.galeria-grid img:hover {
+    transform: scale(1.03); /* Se acerca ligeramente */
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3); /* Resplandor de oro Kraken */
+}
+
+
+/* --- El Catalejo (Lightbox) Flotante --- */
+#lightbox {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* Eliminamos el fondo negro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none; 
+    transition: opacity 0.3s ease;
+}
+
+#lightbox.activo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* El nuevo marco dinámico que abraza la imagen */
+.contenedor-imagen-expandida {
+    position: relative; /* Clave para que los botones se anclen aquí */
+    display: inline-block; /* Hace que el contenedor mida lo mismo que la foto */
+    max-width: 85%;
+    max-height: 85vh;
+}
+
+#imagen-expandida {
+    display: block;
+    max-width: 100%;
+    max-height: 85vh;
+    border: 3px solid var(--oro-kraken);
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+    /* Agregamos una transición suave para que el efecto no sea brusco */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* El efecto mágico de separación al pasar el timón (cursor) */
+#imagen-expandida:hover {
+    transform: translateY(-5px) scale(1.01); /* Se eleva un poco y hace un micro-zoom */
+    /* Cambiamos la sombra oscura por un resplandor dorado sutil para separarla del fondo */
+    box-shadow: 0 25px 60px rgba(212, 175, 55, 0.25); 
+}
+
+/* Botón de cerrar (X) anclado a la esquina de la foto */
+.cerrar-lightbox {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background-color: var(--fondo-profundo);
+    color: var(--oro-kraken);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px; /* Centra la X verticalmente */
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid var(--oro-kraken);
+    transition: 0.3s;
+    z-index: 10;
+}
+
+/* Botones de Navegación anclados a los bordes de la foto */
+.btn-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--fondo-profundo);
+    color: var(--oro-kraken);
+    border: 2px solid var(--oro-kraken);
+    font-size: 24px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%; /* Los hacemos circulares para que combinen con la X */
+    transition: 0.3s;
+    z-index: 10;
+}
+
+/* Efectos al pasar el cursor */
+.btn-nav:hover, .cerrar-lightbox:hover {
+    background-color: var(--oro-kraken);
+    color: var(--fondo-profundo);
+}
+
+/* Ajuste de posición fina para que sobresalgan un poco de la foto */
+.prev { left: -25px; }
+.next { right: -25px; }
+
+
+/* --- Diario de Bitácora (Instagram) --- */
+#instagram-feed {
+    padding: 60px 20px;
+    text-align: center;
+    /* Mantiene el color carbón de las profundidades */
+    background-color: #1a1a1a; 
+}
+
+#instagram-feed .titulo-dorado {
+    /* Nuestro tono dorado de la cantina */
+    color: #d4af37; 
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
+
+
+/* --- Pie de Página (Footer) --- */
+footer {
+    background-color: #0a0a0a; /* El tono más oscuro para el fondo del barco */
+    text-align: center;
+    padding: 50px 20px 20px;
+    border-top: 1px dashed #444; /* Línea sutil para separarlo del resto del contenido */
+}
+
+footer .titulo-dorado {
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+}
+
+.contacto-info p {
+    font-size: 1.3rem;
+    margin: 10px 0;
+}
+
+.contacto-info strong {
+    color: #d4af37; /* Nuestro inconfundible Oro Kraken */
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+}
+
+.contacto-info a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Efecto al pasar el cursor sobre los enlaces de contacto */
+.contacto-info a:hover {
+    color: #d4af37;
+}
+
+.copyright {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #666;
+    font-family: 'Montserrat', sans-serif;
+}
